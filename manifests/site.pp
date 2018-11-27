@@ -1,7 +1,10 @@
 node default {
     include cron_puppet
 
-# TODO parameterize user 'ndelnano' -- or leave it and change user to like, playlist-user
+# TODO parameterize mysql user, change it to something like playlist-user
+# TODO create system user 'ndelnano' and rename it
+# TODO Organize into separate manifests
+# TODO Turn off password auth for root and system user
     
 $override_options = {
   'mysqld' => {
