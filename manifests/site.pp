@@ -1,5 +1,6 @@
 node default {
     include cron_puppet
+    include playlist_maker_python
 
 # TODO parameterize mysql user, change it to something like playlist-user
 # TODO create system user 'ndelnano' and rename it
