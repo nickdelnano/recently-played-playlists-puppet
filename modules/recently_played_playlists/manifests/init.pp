@@ -1,5 +1,6 @@
 class recently_played_playlists {
-  # TODO note about moving .env file in special place
+  # TODO move email to hiera
+  $email = 'nickdelnano@gmail.com'
 
   package { 'python3-pip':
     ensure => installed,
@@ -15,6 +16,7 @@ class recently_played_playlists {
     command => '/usr/local/bin/recently-played-playlists save-played-tracks',
     user    => 'root',
     minute  => 30,
+    environment => "MAILTO=$email",
   } ->
 
   systemd::unit_file { 'playlists_api.service':
