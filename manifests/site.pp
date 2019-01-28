@@ -1,46 +1,37 @@
 node default {
-    include cron_puppet
-    include playlist_maker_python
+    include recently_played_playlists
 
-# TODO parameterize mysql user, change it to something like playlist-user
 # TODO create system user 'ndelnano' and rename it
-# TODO Organize into separate manifests
 # TODO Turn off password auth for root and system user
+# TODO run a puppet linter on this?
     
+# Disable remote MySQL login.
 $override_options = {
   'mysqld' => {
     'bind-address' => '127.0.0.1',
   }
 }
 
+# This username needs to be deployed in .env of recently-played-playlists.
+$mysql_user = 'playlist_user'
+
+# Don't give root or application users a password
+# since we are disabling remote login.
 class { '::mysql::server':
-  root_password           => 'strongpassword',
+  root_password           => 'astrongrootpassword',
   remove_default_accounts => true,
   override_options        => $override_options
-} ->
-
-mysql::db { 'playlists':
-  user     => 'playlist-user',
-  password => 'strongpassword',
-  host     => 'localhost',
-  grant    => ['SELECT', 'UPDATE', 'INSERT'],
-} ->
-
-# Use this to set up the initial schema.
-# Migrations will be handled by the application
-exec { 'clone_playlist_maker_for_schema':
-  command => '/usr/bin/git clone https://github.com/ndelnano/playlist-maker-python.git /tmp/playlist-maker-python-schema',
-  user => root,
-  unless => '/bin/ls /tmp/playlist-maker-python-schema',
-} ->
-
-# Check for an arbitrary table. Easiest thing I can think of.
-exec { 'setup_mysql_schema':
-  command => '/usr/bin/mysql -uroot -pstrongpassword playlists < /tmp/playlist-maker-python-schema/create_tables.sql',
-  user => root,
-  unless => '/usr/bin/test -f /var/lib/mysql/playlists/songs_played.ibd',
 }
 
+-> mysql::db { 'playlists':
+  user     => $mysql_user,
+  password => 'astrongpassword',
+  host     => 'localhost',
+  grant    => ['SELECT', 'UPDATE', 'INSERT'],
+}
+
+
+/*
 
 # ocaml stuff
 package { 'ocaml':
@@ -50,13 +41,6 @@ package { 'ocaml':
 # Includes ocamlbuild
 package { 'opam':
   ensure => installed,
-} ->
-
-# TODO change this. Right now it only clones this once.
-exec { 'clone_playlist_parser':
-  command => '/usr/bin/git clone https://github.com/ndelnano/playlist-parser.git /home/ndelnano/playlist-parser',
-  user => ndelnano,
-  unless => '/bin/ls /home/ndelnano/playlist-parser',
 } ->
 
 # Global opam install bc I don't see other ocaml programs going on this system
@@ -79,9 +63,6 @@ package { libgmp3-dev:
   ensure => installed,
 } ->
 
-exec { 'install_opam_deps':
-  command => '/bin/bash /home/ndelnano/playlist-parser/install_deps.sh',
-  user => root,
-}
+*/
 
 }

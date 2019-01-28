@@ -18,3 +18,6 @@ git clone git@github.com:ndelnano/playlist-maker-puppet.git puppet
 # Run Puppet initially to set up the auto-deploy mechanism
 puppet apply /etc/puppet/manifests/site.pp
 ```
+
+
+puppet module install camptocamp-systemd --version 2.1.0
