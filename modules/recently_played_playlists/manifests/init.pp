@@ -1,9 +1,13 @@
 class recently_played_playlists {
-  # TODO move email to hiera
-  $email = 'nickdelnano@gmail.com'
+  $email = ''
 
   package { 'python3-pip':
     ensure => installed,
+  }
+
+  # To allow cron to send mail.
+  package { 'postfix':
+    ensure => 'installed',
   }
 
   package { 'recently-played-playlists':
@@ -12,8 +16,9 @@ class recently_played_playlists {
     provider => 'pip3',
   } ->
 
+  # Discard stdout so that cron only emails when stderr contains data.
   cron { 'save-played-tracks':
-    command => '/usr/local/bin/recently-played-playlists save-played-tracks',
+    command => '/usr/local/bin/recently-played-playlists save-played-tracks > /dev/null',
     user    => 'root',
     minute  => 30,
     environment => "MAILTO=$email",
@@ -23,11 +28,10 @@ class recently_played_playlists {
    source => "puppet:///modules/recently_played_playlists/playlists_api.service",
   } ~>
 
-  service { 'playlists-api':
+  service { 'playlists_api':
     ensure     => 'running',
     enable     => 'true',
     hasrestart => 'true',
     hasstatus  => 'true',
-    name       => 'playlists-api',
   }
 }
