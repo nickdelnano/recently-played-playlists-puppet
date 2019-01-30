@@ -1,0 +1,16 @@
+[Unit]
+Description=HTTP API for supporting recently-played-playlists-parser
+After=network.target
+
+[Service]
+Type=simple
+User=root
+Group=nogroup
+StandardOutput=syslog
+StandardError=syslog
+WorkingDirectory=/
+ExecStart=/usr/local/bin/recently-played-playlists api
+Restart=always
+
+[Install]
+WantedBy=multi-user.target
