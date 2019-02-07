@@ -46,6 +46,13 @@ puppet apply /etc/puppet/manifests/site.pp
 
 MySQL is now running with remote login disabled--this is why the users 'root' and 'playlist_user' have an empty password. 
 
+To create the MySQL tables:
+```
+cd
+wget https://raw.githubusercontent.com/ndelnano/recently-played-playlists/master/create_tables.sql
+mysql -u root < create_tables.sql
+```
+
 You need to insert a row into the `playlists`.`users` table with the tokens you received from the spotify auth flow.
 Edit the following in the snippet below: `YOUR_USERNAME`, `YOUR_ACCESS_TOKEN`, `YOUR_REFERSH_TOKEN`
 ```
