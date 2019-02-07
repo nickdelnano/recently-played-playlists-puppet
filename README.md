@@ -82,7 +82,7 @@ FLASK_APP=recently_played_playlists/api/api.py
 
 The puppet service 'playlists_api' likely failed when initially applying the recently_played_playlists module without `FLASK_APP` set. Re-run puppet to restart it.
 ```
-puppet apply /etc/puppet/manifests/site.pp
+systemctl restart playlists_api.service
 ```
 
 Verify that the systemd service is running: 
