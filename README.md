@@ -117,8 +117,11 @@ The recently-played-playlists-parser module installed opam and the apt packages 
 # Opam warns for running as root, but since this is the only ocaml code running on this host, I ignore it.
 opam init
 
+# Opam will tell you to run:
+eval `opam config env`
 
-TODO add here
+
+bash install_deps.sh
 
 ```
 
