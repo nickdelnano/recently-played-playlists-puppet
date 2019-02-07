@@ -10,6 +10,10 @@ class recently_played_playlists {
     ensure => 'installed',
   }
 
+  package { 'default-libmysqlclient-dev':
+    ensure => installed,
+  } ->
+
   package { 'recently-played-playlists':
     require  => Package['python3-pip'],
     ensure   => latest,
