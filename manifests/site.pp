@@ -1,6 +1,8 @@
 node default {
-    include recently_played_playlists
-    include recently_played_playlists_parser
+
+  include puppet_utils
+  include recently_played_playlists
+  include recently_played_playlists_parser
 
   # This username needs to be deployed in .env of recently-played-playlists.
   $mysql_user = 'playlist_user'

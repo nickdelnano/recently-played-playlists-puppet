@@ -21,13 +21,28 @@ Do all of the below as `root` user :-)
 wget -O /tmp/puppetlabs.deb http://apt.puppetlabs.com/puppet-release-bionic.deb
 dpkg -i /tmp/puppetlabs.deb
 apt-get update
-apt-get -y install git-core puppet
+apt-get -y install git-core puppet-agent make
 
-# Clone the 'puppet' repo
+## Clone the 'puppet' repo
 cd /etc
-mv puppet/ puppet-bak
-git clone git@github.com:ndelnano/recently-played-playlists-puppet.git puppet
+mv puppetlabs/ puppetlabs.orig
+git clone git@github.com:ndelnano/recently-played-playlists-puppet.git puppetlabs
 
+```
+
+## Install ruby gems and puppet modules
+```
+# Install bundler inside puppet ruby
+/opt/puppetlabs/puppet/bin/gem install bundler
+
+# Gross but we can't install the gems without this puppet placed file :)
+cp modules/puppet_utils/files/puppet-bundle /usr/local/bin/
+
+# Install gems in Gemfile into puppet ruby
+puppet-bundle install
+
+# Install third party puppet modules
+make r10k
 ```
 
 ### Puppeted installation
@@ -41,7 +56,7 @@ Edit `$email=''` in modules/recently_played_playlists/manifests/init.pp so that 
 # - Install packages for recently-played-playlists-parser
 # - Install recently-played-playlists, start its HTTP API, add cron for polling Spotify's recently-played endpoint
 
-puppet apply /etc/puppet/manifests/site.pp
+make apply
 ```
 
 MySQL is now running with remote login disabled--this is why the users 'root' and 'playlist_user' have an empty password. 

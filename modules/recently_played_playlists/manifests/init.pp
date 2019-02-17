@@ -1,5 +1,5 @@
 class recently_played_playlists {
-  $email = ''
+  $email = 'nickdelnano@gmail.com'
 
   package { 'python3-pip':
     ensure => installed,
