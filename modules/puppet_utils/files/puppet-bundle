@@ -1,0 +1,12 @@
+#!/bin/bash
+
+# Wrapper around puppet "ominbus" bundle
+# Example usage:
+#   run bundle install => puppet-bundle install
+#   run r10k install   => puppet-bundle exec r10k install
+
+export GEM_HOME=vendor/gem
+export GEM_PATH=$GEM_HOME:/opt/puppetlabs/puppet/lib/ruby/gems/2.4.0:$GEM_PATH
+export PATH=/opt/puppetlabs/puppet/bin:$PATH
+
+bundle $*
