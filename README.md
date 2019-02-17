@@ -1,5 +1,4 @@
-# dlslslnls
-talling recently-played-playlists and recently-played-playlists-parser
+# Installing recently-played-playlists and recently-played-playlists-parser
 
 This documentation was written with Ubuntu 18.04 in mind.
 
